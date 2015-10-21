@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.reflect.FieldUtils;
+
 /**
  * Created by Sandrine on 16/09/2015.
  */
@@ -19,6 +21,8 @@ public class DataFaker<T> {
     protected Class<T> clazz;
 
     protected HashMap<String, PropertyGenerator> generators = new HashMap<>();
+    
+    protected PropertyFinder propertyFinder = new PropertyFinder();
 
     public DataFaker(Class<T> clazz){
         this(clazz, new DefaultValueGeneratorFactory());
@@ -29,7 +33,7 @@ public class DataFaker<T> {
         this.clazz = clazz;
 
         //prepare default generators for each javabean property
-        List<Field> properties = computePropertyNames();
+        List<Field> properties = propertyFinder.findProperties(clazz);
         for(Field currentField: properties){
             PropertyGenerator generator = factory.generator(currentField);
             this.generators.put(currentField.getName(), generator);
@@ -41,6 +45,7 @@ public class DataFaker<T> {
         return this.generators;
     }
 
+    
     public void setGenerator(String propertyName, PropertyGenerator generator)
             throws NoSuchPropertyException, ConflictTypeGeneratorException{
         String directPropertyName = null;
@@ -90,10 +95,7 @@ public class DataFaker<T> {
             for(Map.Entry<String, PropertyGenerator> currentField: this.generators.entrySet()){
                 PropertyGenerator gen = currentField.getValue();
                 if(gen != null) {
-                    Field field = this.clazz.getDeclaredField(currentField.getKey());
-                    String setterName = setterField(currentField.getKey());
-                    Method method = this.clazz.getDeclaredMethod(setterName, field.getType());
-                    method.invoke(instance, gen.generate());
+                    FieldUtils.writeField(instance, currentField.getKey(), gen.generate(), true);
                 }
             }
             return instance;
@@ -105,54 +107,10 @@ public class DataFaker<T> {
             e.printStackTrace();
         } catch (IllegalAccessException e) {
             e.printStackTrace();
-        } catch (NoSuchFieldException e) {
-            e.printStackTrace();
-        }
+        } 
         return null;
     }
-
-
-    protected List<Field> computePropertyNames(){
-        ArrayList<Field> properties = new ArrayList<>();
-
-        Field[] fields = this.clazz.getDeclaredFields();
-        for(Field currentField: fields){
-            if(hasGetter(currentField) && hasSetter(currentField)){
-                properties.add(currentField);
-            }
-        }
-
-        return properties;
-    }
-
-
-    protected boolean hasGetter(Field field){
-        try {
-            this.clazz.getDeclaredMethod(getterField(field.getName()));
-            return true;
-        } catch (NoSuchMethodException e) {
-            return false;
-        }
-    }
-
-
-    protected String getterField(String fieldName){
-        return "get" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
-    }
-
-    protected boolean hasSetter(Field field){
-        try {
-            this.clazz.getDeclaredMethod(setterField(field.getName()), field.getType());
-            return true;
-        } catch (NoSuchMethodException e) {
-            return false;
-        }
-    }
-
-    protected String setterField(String fieldName){
-        return "set" + fieldName.substring(0,1).toUpperCase() + fieldName.substring(1);
-    }
-
+    
 
     protected void fakeProperty(String propertyName){
 
