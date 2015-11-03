@@ -97,7 +97,7 @@ public class DefaultValueGeneratorFactory implements IPropertyGeneratorFactory {
             return new IncrementLongPropertyGenerator();
         }
 
-        return null;
+        return new RandomLongPropertyGenerator(1, 10);
     }
 
 

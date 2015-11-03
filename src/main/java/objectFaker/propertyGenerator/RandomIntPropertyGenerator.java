@@ -1,5 +1,7 @@
 package objectFaker.propertyGenerator;
 
+import java.util.Random;
+
 import objectFaker.propertyGenerator.RandomNumberPropertyGenerator;
 
 /**
@@ -7,8 +9,11 @@ import objectFaker.propertyGenerator.RandomNumberPropertyGenerator;
  */
 public class RandomIntPropertyGenerator extends RandomNumberPropertyGenerator<Integer> {
 
+    protected Random rand;
+    
     public RandomIntPropertyGenerator(int first, int last){
         super(first, last);
+        this.rand = new Random();
     }
 
 
