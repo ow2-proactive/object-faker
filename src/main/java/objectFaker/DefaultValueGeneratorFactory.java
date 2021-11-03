@@ -127,8 +127,8 @@ public class DefaultValueGeneratorFactory implements IPropertyGeneratorFactory {
     }
 
 
-    protected Class getParameterClassFromList(Class clazz){
-        ParameterizedType t = (ParameterizedType) clazz.getGenericSuperclass();
+    protected Class getParameterClassFromList(Type type){
+        ParameterizedType t = (ParameterizedType) type;
         return (Class) t.getActualTypeArguments()[0];
     }
 
@@ -144,7 +144,7 @@ public class DefaultValueGeneratorFactory implements IPropertyGeneratorFactory {
     }
 
     protected PropertyGenerator generatorForList(Field field){
-        return generatorForList(field.getType());
+        return generatorForList(field.getGenericType());
     }
 
     protected PropertyGenerator generatorForObject(Class clazz){
@@ -157,8 +157,8 @@ public class DefaultValueGeneratorFactory implements IPropertyGeneratorFactory {
     }
 
 
-    protected PropertyGenerator generatorForList(Class clazz){
-        return new ListObjectPropertyGenerator<>(getParameterClassFromList(clazz), 3);
+    protected PropertyGenerator generatorForList(Type type){
+        return new ListObjectPropertyGenerator<>(getParameterClassFromList(type), 3);
     }
 
 

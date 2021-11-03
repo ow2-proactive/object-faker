@@ -1,5 +1,5 @@
 group 'ObjectFaker'
-version '0.2-SNAPSHOT'
+version '0.2'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -20,7 +20,14 @@ dependencies {
 uploadArchives {
     repositories {
         mavenDeployer {
-            repository(url: "file:///C:/data/repositories/mavenRepository/")
+            snapshotRepository(url: "http://repository.activeeon.com/content/repositories/snapshots/") {
+                authentication(userName: "${System.getProperty('nexusUsername')}",
+                        password: "${System.getProperty('nexusPassword')}")
+            }
+            repository(url: "http://repository.activeeon.com/content/repositories/thirdparty/") {
+                authentication(userName: "${System.getProperty('nexusUsername')}",
+                        password: "${System.getProperty('nexusPassword')}")
+            }
         }
     }
 }
