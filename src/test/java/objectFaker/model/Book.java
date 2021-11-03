@@ -2,6 +2,7 @@ package objectFaker.model;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class Book {
 
@@ -19,6 +20,26 @@ public class Book {
 		this.translations = translations;
 	}
 
+	private Map<String, Map<String, Integer>> otherBooksByAuthors;
+
+	public Map<String, Map<String, Integer>> getOtherBooksByAuthors() {
+		return otherBooksByAuthors;
+	}
+
+	public void setOtherBooksByAuthors(Map<String, Map<String, Integer>> otherBooksByAuthors) {
+		this.otherBooksByAuthors = otherBooksByAuthors;
+	}
+
+	private Map<String, List<Integer>> reviewDatesByAuthors;
+
+	public Map<String, List<Integer>> getReviewDatesByAuthors() {
+		return reviewDatesByAuthors;
+	}
+
+	public void setReviewDatesByAuthors(Map<String, List<Integer>> reviewDatesByAuthors) {
+		this.reviewDatesByAuthors = reviewDatesByAuthors;
+	}
+
 	private List<String> authors;
 
 	public List<String> getAuthors() {
@@ -27,6 +48,16 @@ public class Book {
 
 	public void setAuthors(List<String> authors) {
 		this.authors = authors;
+	}
+
+	private Set<String> authorsSet;
+
+	public Set<String> getAuthorsSet() {
+		return authorsSet;
+	}
+
+	public void setAuthorsSet(Set<String> authorsSet) {
+		this.authorsSet = authorsSet;
 	}
 
 	public String getTitle() {

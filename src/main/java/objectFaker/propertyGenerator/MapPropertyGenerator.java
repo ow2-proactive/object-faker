@@ -29,6 +29,12 @@ public class MapPropertyGenerator<K, V> implements PropertyGenerator<Map<K, V>>,
         this.size = size;
     }
 
+    public MapPropertyGenerator(Class<K> keyClass, PropertyGenerator<V> valueGenerator, IPropertyGeneratorFactory factory, int size){
+        this.keyGenerator = factory.generator(keyClass);
+        this.valueGenerator = valueGenerator;
+        this.size = size;
+    }
+
 
 
     @Override
