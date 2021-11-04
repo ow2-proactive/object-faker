@@ -60,7 +60,17 @@ public class Book {
 		this.authorsSet = authorsSet;
 	}
 
-	public String getTitle() {
+    Map<String, Map<String, List<Person>>> bibliography;
+
+    public Map<String, Map<String, List<Person>>> getBibliography() {
+        return bibliography;
+    }
+
+    public void setBibliography(Map<String, Map<String, List<Person>>> bibliography) {
+        this.bibliography = bibliography;
+    }
+
+    public String getTitle() {
 		return title;
 	}
 

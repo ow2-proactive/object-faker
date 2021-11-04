@@ -229,6 +229,10 @@ public class DefaultValueGeneratorFactory implements IPropertyGeneratorFactory {
 
     protected PropertyGenerator generatorForMap(Type type, Type... parameterTypes) {
         if (parameterTypes != null && parameterTypes.length == 2) {
+            if (parameterTypes[1] instanceof ParameterizedType) {
+                ParameterizedType parameterizedType = (ParameterizedType) parameterTypes[1];
+                return new MapPropertyGenerator<>((Class) parameterTypes[0], generator((Class) parameterizedType.getRawType(), parameterizedType.getActualTypeArguments()), this, 3);
+            }
             return new MapPropertyGenerator<>((Class) parameterTypes[0], (Class) parameterTypes[1], this, 3);
         } else if (isParameterKeyAParameterizedType(type) && isParameterValueAParameterizedType(type)) {
             ParameterizedType parameterizedKeyType = getParameterKeyParameterizedType(type);
